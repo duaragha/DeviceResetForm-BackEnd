@@ -1,0 +1,153 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+    integrity="sha512-c1RXn7RaF2q9B/41RttFj5Vi6aLw1bYn6oC5/UJzz/8bcJeiW6ZdUq9Igl4oQrKWqQCFJyZdF5V2ZOV3LnQMPQ=="
+    crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha512-u7s5AV0fPzCPwGN+HaD2cdI/YaFqx5dTEiN8DtJ0VE1qE0Stx/0Grt+6HbpG9xQsQQF0xlY7eTYPXUK3/6GaUw=="
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
+    integrity="sha512-1YIovlZOb5aRjKfOSNK00mVT54OJQ2n0eOv1pLFr0o3vT5Qz12AD2gNPBLQ/C9RzBl+6FrH1AVdFlLrj5Y6eDQ=="
+    crossorigin="anonymous"></script>
+<link rel="stylesheet" href="DRF.css">
+
+<div>
+    <p style="font-size:14px;"><strong>
+            To request a password reset, you must validate ownership for security purposes. If you do not have proof of
+            ownership details, refer to the article
+            <a href="https://help.lorextechnology.com/link/portal/57356/57366/Article/3774/how-reset-your-password">“How
+                to Reset Your Password”</a> for quick steps to restore access.<br>
+            <div id="agenthours">
+                <p>
+                    <strong>Support Hours Eastern Time: </strong><br>
+                    Mon to Fri: 10:00AM - 9:00PM <br>
+                    Sat & Sun: Closed <br><br>
+                </p>
+            </div>
+            <p style="color:red;"><strong>Required: Make sure you have direct access to the device you are resetting and
+                    a connected monitor for recorders (DVR/NVR).</strong></p>
+            Fill out and submit the form to request a password reset for your device.
+        </strong></p>
+</div>
+
+<div id="forgotNvrPinSection" style="display:none;">
+    <form action="https://hicn8y3j54.execute-api.us-east-1.amazonaws.com/prod/api/v1/tickets" method="POST"
+        enctype="multipart/form-data" id="forgotnvrpinForm">
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="firstName">First Name*</label>
+                <input id="firstName" name="firstName" class="form-control" placeholder="Ex. Bob" required="true"
+                    type="text">
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="lastName">Last Name*</label>
+                <input id="lastName" name="lastName" class="form-control" placeholder="Ex. Smith" required="true"
+                    type="text">
+            </div>
+        </div>
+
+        <div class="col-sm-12 form-group">
+            <label for="phoneNumber">Phone Number*</label>
+            <input id="phoneNumber" name="phoneNumber" class="form-control" placeholder="Ex. XXX-XXX-XXXX"
+                required="true" type="text">
+        </div>
+
+        <div class="col-sm-12 form-group">
+            <label for="modelNumber">Model Number*</label>
+            <select id="modelNumber" name="modelNumber"
+                class="form__field form__field--text model-number-dropdown select2">
+                {% render 'forgotnvrpin-model_ids' %}
+            </select>
+            <a href="https://help.lorextechnology.com/link/portal/57356/57366/Article/3603/how-locate-your-device-model-or-serial-number"
+                class="information-icon">ⓘ How do I find my Model Number?</a>
+        </div>
+
+        <div class="col-sm-12 form-group">
+            <label for="deviceID">Device ID*</label>
+            <input id="deviceID" name="deviceID" class="form-control" placeholder="Ex. LNW27A207263E78" required="true"
+                type="text" pattern=".{10,}" title="Please enter 10 or more characters">
+            <a href="https://help.lorextechnology.com/link/portal/57356/57366/Article/3774/how-reset-your-password#deviceid"
+                class="information-icon">ⓘ How do I find my Device ID?</a>
+        </div>
+
+        <div class="col-sm-12 form-group">
+            <label for="serialNumber">Serial Number(S/N)*</label>
+            <input id="serialNumber" name="serialNumber" class="form-control" placeholder="Ex. ND021911030913"
+                required="true" type="text" pattern=".{10,}" title="Please enter 10 or more characters">
+            <a href="https://help.lorextechnology.com/link/portal/57356/57366/Article/3603/how-locate-your-device-model-or-serial-number"
+                class="information-icon">ⓘ How do I find my Serial Number?</a>
+        </div>
+
+        <div class="col-sm-12 form-group">
+            <label for="dateDevice">Date Displayed on Device*</label>
+            <p><strong>Provide the system date, located in the top-right corner of the screen once the recorder is
+                    powered on.</strong></p>
+            <input id="dateDevice" name="dateDevice" class="form-control" placeholder="date" required="true"
+                type="date">
+        </div>
+
+        <div class="col-sm-12 form-group">
+            <div class="button-grey btn-file">
+                <label for="proofOfPurchase">Upload Proof of Purchase OR Photo ID (Drivers License)*</label>
+                <p style="font-size:16px;"><strong>NOTE: Please hide your address, DOB and license number from your ID.
+                        The password reset form requires visual confirmation of your name.</strong></p>
+                <input id="proofOfPurchase" name="proofOfPurchase" class="form__field form__field--text" type="file"
+                    accept=".png, .jpg" onchange="previewImages('proofOfPurchase', 'imagePreview1')">
+                <div id="imagePreview1" class="image-preview"></div>
+                <p>Please upload a picture of the receipt from where the unit was purchased.</p>
+            </div>
+            <div id="fileUploadError1" class="displaynone hidden">
+                <span class="alert alert--error"></span>
+            </div>
+        </div>
+
+        <div class="col-sm-12 form-group">
+            <div class="button-grey btn-file">
+                <label for="systemInfo">Upload Device Info*</label>
+                <input id="systemInfo" name="systemInfo" class="form__field form__field--text" type="file"
+                    accept=".png, .jpg" onchange="previewImages('systemInfo', 'imagePreview2')">
+                <div id="imagePreview2" class="image-preview"></div>
+                <p>Please Upload a picture of the Device Info Screen displaying the Serial Number.</p>
+            </div>
+            <div id="fileUploadError2" class="displaynone hidden">
+                <span class="alert alert--error"></span>
+            </div>
+        </div>
+
+        <div class="col-sm-12 form-group">
+            <div class="button-grey btn-file">
+                <label for="stickerLabel">Upload Information Sticker*</label>
+                <input id="stickerLabel" name="stickerLabel" class="form__field form__field--text" type="file"
+                    accept=".png, .jpg" onchange="previewImages('stickerLabel', 'imagePreview3')">
+                <div id="imagePreview3" class="image-preview"></div>
+                <p>Please Upload a picture of the sticker with the serial number and model number at the bottom of the
+                    unit.</p>
+            </div>
+            <div id="fileUploadError3" class="displaynone hidden">
+                <span class="alert alert--error"></span>
+            </div>
+        </div>
+
+        <input id="idToken" name="idToken" value="" type="hidden">
+
+        <div class="col-sm-12 form-group">
+            <div class="actions">
+                <button class="button button--transparent" id="submitForm" type="submit">Submit</button>
+                <button class="button button--transparent" id="cancelNewItem" type="reset">Clear Form</button>
+            </div>
+        </div>
+
+        <div id="customPopup" class="custom-popup">
+            <div class="popup-content">
+                <p id="popupMessage"></p>
+                <button class="close-popup" onclick="return closeCustomPopup()">Okay</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="warrantyMessage" style="display: none; color: red;">Please register a warranty first.</div>
+<div class="overlay" id="overlay">
+    <div id="loadingAnimation" class="loading-animation"></div>
+</div>
+<div class="clearfix"></div>
+
+<script async src="DRF.js"></script>
